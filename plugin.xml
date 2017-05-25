@@ -21,4 +21,14 @@
         <source-file src="src/android/Service.java" target-dir="src/com/heytz/pushService"/>
         <source-file src="libs/org.eclipse.paho.client.mqttv3.jar" target-dir="libs"/>
     </platform>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="ServiceWrapper">
+                <param name="ios-package" value="ServiceWrapper"/>
+            </feature>
+        </config-file>
+        <source-file src="src/ios/PushService.m"/>
+        <source-file src="src/ios/Constants.h"/>
+        <source-file src="src/ios/AppDelegate+pushService.m"/>
+    </platform>
 </plugin>

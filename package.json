@@ -3,7 +3,8 @@
   "name": "com.heytz.PushService",
   "cordova_name": "PushService",
   "platforms": [
-    "android"
+    "android",
+    "ios"
   ],
   "engines": []
 }

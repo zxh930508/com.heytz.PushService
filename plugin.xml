@@ -31,4 +31,6 @@
         <source-file src="src/ios/Constants.h"/>
         <source-file src="src/ios/AppDelegate+pushService.m"/>
     </platform>
+    <hook type="before_build" src="scripts/updateMainActivity.sh" />
+
 </plugin>

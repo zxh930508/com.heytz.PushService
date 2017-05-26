@@ -13,6 +13,7 @@ import com.dorlink.keyway.MainActivity;
 import com.dorlink.keyway.R;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.json.*;
 
 import java.io.IOException;
 
@@ -47,6 +48,7 @@ public class Service extends android.app.Service {
     // arrive more than once. However, this means that some messages might get lost (delivery is not guaranteed)
     private static int[] MQTT_QUALITIES_OF_SERVICE = {0};
     private static int MQTT_QUALITY_OF_SERVICE = 0;
+    private int notifyId = 0;
     // The broker should not retain any messages.
     private static boolean MQTT_RETAINED_PUBLISH = false;
 
@@ -432,10 +434,24 @@ public class Service extends android.app.Service {
 
         // Simply open the parent activity
 
+        String title = text;
+        String content = text;
+        String ticker = text;
+        String page = "";
+        try {
+            JSONObject notifyObj = new JSONObject(text);
+            title = notifyObj.getString("title");
+            content = notifyObj.getString("content");
+            ticker = notifyObj.getString("ticker");
+            page = notifyObj.getString("page");
+        } catch (Exception e) {
 
+        }
         Intent intent = new Intent(this, MainActivity.class);
-
-        PendingIntent pi = PendingIntent.getActivities(this, 0, new Intent[]{intent}, PendingIntent.FLAG_CANCEL_CURRENT);
+        if (page != "") {
+            intent.setAction("NOTI#" + page + "#" + notifyId);
+        }
+        PendingIntent pi = PendingIntent.getActivities(this, notifyId, new Intent[]{intent}, PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        PendingIntent pi = PendingIntent.getActivity(this, 0,
 //                new Intent(this, Service.class), 0);
@@ -444,12 +460,13 @@ public class Service extends android.app.Service {
         Notification n = new Notification.Builder(this)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setSmallIcon(R.drawable.icon)
-                .setTicker(text)
-                .setContentTitle(text)
-                .setContentText(text)
-                .setContentIntent(pi).setNumber(1).build();
+                .setTicker(ticker)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setContentIntent(pi).build();
+        mNotifMan.notify(notifyId, n);
+        notifyId++;
 
-        mNotifMan.notify(NOTIF_CONNECTED, n);
     }
 
     // Check if we are online

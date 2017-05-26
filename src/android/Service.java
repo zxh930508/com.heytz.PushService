@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
 import android.util.Log;
+import com.dorlink.keyway.MainActivity;
 import com.dorlink.keyway.R;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -17,7 +18,7 @@ import java.io.IOException;
 
 //import com.ibm.mqtt.*;
 
-/* 
+/*
  * PushService that does all of the work.
  * Most of the logic is borrowed from KeepAliveService.
  * http://code.google.com/p/android-random/source/browse/trunk/TestKeepAlive/src/org/devtcg/demo/keepalive/KeepAliveService.java?r=219
@@ -430,8 +431,14 @@ public class Service extends android.app.Service {
 //        n.when = System.currentTimeMillis();
 
         // Simply open the parent activity
-        PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, Service.class), 0);
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+
+        PendingIntent pi = PendingIntent.getActivities(this, 0, new Intent[]{intent}, PendingIntent.FLAG_CANCEL_CURRENT);
+
+//        PendingIntent pi = PendingIntent.getActivity(this, 0,
+//                new Intent(this, Service.class), 0);
 
         // Change the name of the notification here
         Notification n = new Notification.Builder(this)

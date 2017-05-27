@@ -4,11 +4,11 @@
 #import <UserNotifications/UserNotifications.h>
 #import "Constants.h"
 #import "MainViewController.h"
+#import "PushService.h"
 
 extern NSString *token;
-
+NSString *page;
 @implementation AppDelegate(pushService)
-
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
@@ -87,10 +87,19 @@ fetchCompletionHandler:
     
     NSLog(@"userInfo == %@",userInfo);
     NSString *message = [[userInfo objectForKey:@"aps"]objectForKey:@"alert"];
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    
+    page = [userInfo objectForKey:@"page"];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"查看", nil];
+    NSLog(@"buttonTitleAtIndex1:%@",[alert buttonTitleAtIndex:1]);
     [alert show];
+   
+  
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==1){
+        NSString *jsStr = [NSString stringWithFormat:@"Router.go('%@')",page];
+        [self.viewController.commandDelegate evalJs:jsStr];
+    }
 }
 
 - (void)application:(UIApplication*)applicationdidRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken{

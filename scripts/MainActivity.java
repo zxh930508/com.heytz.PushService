@@ -52,7 +52,7 @@ public class MainActivity extends CordovaActivity {
 //            MainActivity.getActivity().runOnUiThread(new Runnable() {
 //                @Override
 //                public void run() {
-//                    heytzSmartApp.getSmartBand().webView.loadUrl("javascript:" + "Router.go('" + page + "')");
+//                    webView.loadUrl("javascript:" + "Router.go('" + page + "')");
 //                }
 //            });
             loadUrl("javascript:" + "Router.go('" + page + "')");

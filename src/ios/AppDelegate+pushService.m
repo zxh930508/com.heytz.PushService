@@ -4,7 +4,6 @@
 #import <UserNotifications/UserNotifications.h>
 #import "Constants.h"
 #import "MainViewController.h"
-#import "PushService.h"
 
 extern NSString *token;
 NSString *page;

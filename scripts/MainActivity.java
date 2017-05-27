@@ -48,7 +48,14 @@ public class MainActivity extends CordovaActivity {
             mNotifMan.cancel(Integer.parseInt(actionArr[2]));
             String rootUrl = launchUrl.substring(0, launchUrl.indexOf("/", 8) + 1);
             rootUrl = rootUrl + actionArr[1];
-            loadUrl(rootUrl);
+            final String page=actionArr[1];
+//            MainActivity.getActivity().runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    heytzSmartApp.getSmartBand().webView.loadUrl("javascript:" + "Router.go('" + page + "')");
+//                }
+//            });
+            loadUrl("javascript:" + "Router.go('" + page + "')");
         }
         super.onNewIntent(intent);
     }
